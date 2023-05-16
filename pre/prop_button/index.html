@@ -5,9 +5,11 @@
   </body>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ text, save, changeClick }) {
+    function Btn({ text, save, changeClick, fontSize = 12 }) {
+      console.log(text, "was rendered");
       return (
         <button
           onClick={changeClick}
@@ -23,7 +25,12 @@
         </button>
       );
     }
+    const MemorizedBtn = React.memo(Btn); //memo=No re-render for not change
 
+    MemorizedBtn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.nember,
+    };
     function App() {
       const [value, setValue] = React.useState("Save Changes");
       const changeValue = () =>
@@ -32,8 +39,13 @@
         );
       return (
         <div>
-          <Btn text={value} save={true} changeClick={changeValue} />
-          <Btn text="Continue" />
+          <MemorizedBtn
+            text={value}
+            save={true}
+            changeClick={changeValue}
+            fontSize={18}
+          />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
